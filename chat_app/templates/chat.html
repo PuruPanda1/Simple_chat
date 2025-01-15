@@ -147,6 +147,35 @@
     {{slug|json_script:"room_slug"}}
 
     <script>
+
+        function adjustPageScale() {
+            const screenWidth = window.innerWidth;
+            let scale;
+
+            if (screenWidth >= 992 && screenWidth <= 1600) {
+                scale = 0.9; // Shrink to 90%
+            } else if (screenWidth >= 700 && screenWidth <= 767) {
+                scale = 0.8; // Shrink to 80%
+            } else if (screenWidth >= 600 && screenWidth < 700) {
+                scale = 0.75; // Shrink to 75%
+            } else if (screenWidth <= 600) {
+                scale = 0.5; // Shrink to 50%
+            } else {
+                scale = 1; // Default scale for other screen sizes
+            }
+
+            document.body.style.transform = `scale(${scale})`;
+            document.body.style.transformOrigin = "0 0"; // Scale from the top-left corner
+            document.body.style.width = `${100 / scale}%`; // Ensure content remains centered
+        }
+
+        // Run the function initially
+        adjustPageScale();
+
+        // Add an event listener to handle window resizing
+        window.addEventListener('resize', adjustPageScale);
+
+
         const chatbox = document.querySelector("#chatbox");
 
         // Function to scroll to the bottom of the chatbox
