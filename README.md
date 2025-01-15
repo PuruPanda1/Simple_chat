@@ -1,4 +1,4 @@
-# Steps to Run a Simple Chat Django Web Socket Project
+# Steps to Run the Simple Chat Django Web Socket Project
 
 ## 1. Create a Virtual Environment
 ```bash
