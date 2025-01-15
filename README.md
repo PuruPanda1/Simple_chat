@@ -24,3 +24,74 @@ python manage.py migrate
 ```bash
 python manage.py runserver
 ```
+
+# AWS Codes
+
+## 1. Add two numbers and return the result
+```
+exports.handler = async (event) => {
+    try {
+        const { num1, num2 } = JSON.parse(event.body);
+
+        if (typeof num1 !== 'number' || typeof num2 !== 'number') {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ message: "Invalid input. num1 and num2 must be numbers." }),
+            };
+        }
+
+        const result = num1 + num2;
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ result }),
+        };
+    } catch (error) {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ message: "Internal Server Error", error: error.message }),
+        };
+    }
+};
+```
+
+## 2. Store a Document file in an S3 Bucket
+```
+const AWS = require('aws-sdk');
+const s3 = new AWS.S3();
+
+exports.handler = async (event) => {
+    try {
+        const bucketName = "your-s3-bucket-name";
+        const { fileName, fileContent } = JSON.parse(event.body);
+
+        if (!fileName || !fileContent) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ message: "Missing fileName or fileContent in request." }),
+            };
+        }
+
+        const buffer = Buffer.from(fileContent, 'base64');
+
+        const params = {
+            Bucket: bucketName,
+            Key: fileName,
+            Body: buffer,
+            ContentType: "application/pdf", // Change this if the file type differs
+        };
+
+        await s3.upload(params).promise();
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ message: "File uploaded successfully." }),
+        };
+    } catch (error) {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ message: "File upload failed.", error: error.message }),
+        };
+    }
+};
+```
