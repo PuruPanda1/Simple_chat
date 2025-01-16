@@ -25,6 +25,13 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+## Video Demo of the Simple Chat
+
+
+https://github.com/user-attachments/assets/6dd75075-8cec-4798-8cfc-60415bcd8f81
+
+
+
 # AWS Codes
 
 ## 1. Add two numbers and return the result
