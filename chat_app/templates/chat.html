@@ -13,7 +13,8 @@
 <body>
 
     <!-- NavBar -->
-    <nav id="navbar" class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <nav id="navbar"
+        class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
@@ -28,12 +29,14 @@
                             </path>
                         </svg>
                     </button>
+                    {% if not room_name == "select_room" %}
                     <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white group">
                         <img class="w-12 h-12 rounded-full"
                             src="https://ui-avatars.com/api/?name={{ room_name|urlencode }}&size=72&background=random"
                             alt="user photo">
                         <span class="ms-3 text-5xl">{{ room_name|capfirst }}</span>
                     </a>
+                    {% endif %}
                 </div>
                 <div class="flex items-center">
                     <div class="flex items-center ms-3">
@@ -98,8 +101,8 @@
     </div>
 
     <!-- Chat Screen -->
+    {% if not room_name == "select_room" %}
     <div class="p-4 h-screen mt-16 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 overflow-y">
-
 
         <div id="chatbox" class=" chatbox flex-fill p-3 overflow-y-auto h-[calc(100%-200px)]">
             {% if chats %} {% for message in chats %}
@@ -129,42 +132,44 @@
             </div>
         </div>
 
-
-
     </div>
-
+    {% else %}
+    <div class="flex items-center justify-center h-screen mt-16 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+        <p class="text-2xl text-gray-900 dark:text-white">Choose a user from the left sidebar to start chating</p>
+    </div>
+    {% endif %}
 
     {{slug|json_script:"room_slug"}}
 
     <script>
-    function adjustPageScale() {
-        const screenWidth = window.innerWidth;
+        function adjustPageScale() {
+            const screenWidth = window.innerWidth;
 
-        if (screenWidth >= 992 && screenWidth <= 1600) {
-            document.body.style.width = "90%";
-            document.getElementById("navbar").style.width = "90%";
-            document.getElementById("drawer-navigation").style.left = "5%";
-        } else if (screenWidth >= 700 && screenWidth <= 767) {
-            document.body.style.width = "80%";
-            document.getElementById("navbar").style.width = "80%";
-            document.getElementById("drawer-navigation").style.left = "10%";
-        } else if (screenWidth >= 600 && screenWidth < 700) {
-            document.body.style.width = "75%";
-            document.getElementById("navbar").style.width = "70%";
-            document.getElementById("drawer-navigation").style.left = "12.5%";
-        } else if (screenWidth <= 600) {
-            document.body.style.width = "50%";
-            document.getElementById("navbar").style.width = "50%";
-            document.getElementById("drawer-navigation").style.left = "25%";
-        } else {
-            document.body.style.width = "100%";
-            document.getElementById("navbar").style.width = "100%";
-            document.getElementById("drawer-navigation").style.left = "0";
+            if (screenWidth >= 992 && screenWidth <= 1600) {
+                document.body.style.width = "90%";
+                document.getElementById("navbar").style.width = "90%";
+                document.getElementById("drawer-navigation").style.left = "5%";
+            } else if (screenWidth >= 700 && screenWidth <= 767) {
+                document.body.style.width = "80%";
+                document.getElementById("navbar").style.width = "80%";
+                document.getElementById("drawer-navigation").style.left = "10%";
+            } else if (screenWidth >= 600 && screenWidth < 700) {
+                document.body.style.width = "75%";
+                document.getElementById("navbar").style.width = "70%";
+                document.getElementById("drawer-navigation").style.left = "12.5%";
+            } else if (screenWidth <= 600) {
+                document.body.style.width = "50%";
+                document.getElementById("navbar").style.width = "50%";
+                document.getElementById("drawer-navigation").style.left = "25%";
+            } else {
+                document.body.style.width = "100%";
+                document.getElementById("navbar").style.width = "100%";
+                document.getElementById("drawer-navigation").style.left = "0";
+            }
+
+            document.body.style.margin = "0 auto"; // Center the elements
+            document.body.classList.add("bg-gray-800"); // Apply background color
         }
-
-        document.body.style.margin = "0 auto"; // Center the elements
-        document.body.classList.add("bg-gray-800"); // Apply background color
-    }
 
         // Run the function initially
         adjustPageScale();
