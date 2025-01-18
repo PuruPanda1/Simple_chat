@@ -105,7 +105,7 @@
     <div class="p-4 h-screen mt-16 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 overflow-y">
 
         <div id="chatbox" class=" chatbox flex-fill p-3 overflow-y-auto h-[calc(100%-200px)]">
-            {% if chats %} {% for message in chats %}
+            {% for message in chats %}
             <div class="m-4 flex items-start gap-2.5 {% if message.sender == request.user %}justify-end{% endif %}">
                 <div
                     class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 {% if message.sender == request.user %}bg-blue-500  dark:bg-blue-700 rounded-se-xl{% else %}bg-gray-100 dark:bg-gray-700 rounded-e-xl{% endif %}  rounded-es-xl ">
@@ -114,11 +114,7 @@
                         {{message.content}}</p>
                 </div>
             </div>
-            {% endfor %} {% else %}
-            <div class="flex items-center justify-center h-screen mt-16 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                <p class="text-2xl text-gray-900 dark:text-white">No messages</p>
-            </div>
-            {% endif %}
+            {% endfor %}
         </div>
 
 
@@ -144,42 +140,6 @@
     {{slug|json_script:"room_slug"}}
 
     <script>
-        function adjustPageScale() {
-            const screenWidth = window.innerWidth;
-
-            if (screenWidth >= 992 && screenWidth <= 1600) {
-                document.body.style.width = "90%";
-                document.getElementById("navbar").style.width = "90%";
-                document.getElementById("drawer-navigation").style.left = "5%";
-            } else if (screenWidth >= 700 && screenWidth <= 767) {
-                document.body.style.width = "80%";
-                document.getElementById("navbar").style.width = "80%";
-                document.getElementById("drawer-navigation").style.left = "10%";
-            } else if (screenWidth >= 600 && screenWidth < 700) {
-                document.body.style.width = "75%";
-                document.getElementById("navbar").style.width = "70%";
-                document.getElementById("drawer-navigation").style.left = "12.5%";
-            } else if (screenWidth <= 600) {
-                document.body.style.width = "50%";
-                document.getElementById("navbar").style.width = "50%";
-                document.getElementById("drawer-navigation").style.left = "25%";
-            } else {
-                document.body.style.width = "100%";
-                document.getElementById("navbar").style.width = "100%";
-                document.getElementById("drawer-navigation").style.left = "0";
-            }
-
-            document.body.style.margin = "0 auto"; // Center the elements
-            document.body.classList.add("bg-gray-800"); // Apply background color
-        }
-
-        // Run the function initially
-        adjustPageScale();
-
-        // Add an event listener to handle window resizing
-        window.addEventListener('resize', adjustPageScale);
-
-
         const chatbox = document.querySelector("#chatbox");
 
         // Function to scroll to the bottom of the chatbox
@@ -241,12 +201,6 @@
                     noMessages.style.display = "none";
                 }
 
-                // const div = document.createElement("div");
-                // const isSender = data.sender === request.user
-
-                // div.className = "m-4 flex items-start gap-2.5";
-
-                // div.innerHTML = data.message;
                 const messageDiv = document.createElement("div");
                 messageDiv.className = `m-4 flex items-start gap-2.5 ${data.sender === "{{ request.user.username }}" ? "justify-end" : ""}`;
 
@@ -261,44 +215,8 @@
                 messageDiv.appendChild(innerDiv);
                 chatbox.appendChild(messageDiv);
 
-                chatbox.appendChild(div);
-                // Scroll to the bottom of the chatbox
                 scrollToBottom();
-
-                // Update the last message in the sidebar
-                const lastMessage = document.querySelector(
-                    ".list-group-item.active #last-message"
-                );
-                if (lastMessage) {
-                    lastMessage.innerHTML =
-                        data.sender === "{{ request.user.username }}"
-                            ? "You: " + data.message
-                            : data.message;
-
-                    // update tyime4stamp in format of UTC time 12:00, 13:00 etc
-                    const timestamp = document.querySelector(
-                        ".list-group-item.active small"
-                    );
-                    const date = new Date().toUTCString();
-                    timestamp.innerHTML = date.slice(17, 22);
-
-                    // update the chats list sorting by the last message timestamp in descending order
-                    const chats = document.querySelectorAll(".list-group-item");
-                    const chatsArray = Array.from(chats);
-                    const chatsSorted = chatsArray.sort((a, b) => {
-                        const aTime = a.querySelector("small").innerHTML;
-                        const bTime = b.querySelector("small").innerHTML;
-                        return aTime < bTime ? 1 : -1;
-                    });
-
-                    const contacts = document.querySelector(".contacts");
-                    contacts.innerHTML = "";
-                    chatsSorted.forEach((chat) => {
-                        contacts.appendChild(chat);
-                    });
-                } else {
-                    console.error("No active chat selected");
-                }
+              
             } else {
                 console.error("Message or sender data is missing:", data);
             }
