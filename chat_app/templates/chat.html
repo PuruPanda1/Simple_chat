@@ -105,7 +105,7 @@
     <div
         class="p-4 h-screen mt-16 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 overflow-y-auto">
 
-        <div id="chatbox" class=" chatbox flex-fill p-3 overflow-y-auto h-[calc(100%-120px)]">
+        <div id="chatbox" class=" chatbox flex-fill p-3 overflow-y-auto h-[calc(100%-200px)]">
             {% for message in chats %}
             <div class="m-4 flex items-start gap-2.5  {% if message.sender == request.user %}justify-end{% endif %}">
                 <div
