@@ -1,4 +1,4 @@
-# Steps to Run the Simple Chat Django Web Socket Project
+# Steps to Run the ChatterBox Django Web Socket Project
 
 ## 1. Create a Virtual Environment
 ```bash
@@ -25,7 +25,7 @@ python manage.py migrate
 python manage.py runserver
 ```
 
-## Video Demo of the Simple Chat
+## Video Demo of the ChatterBox
 
 
 https://github.com/user-attachments/assets/6dd75075-8cec-4798-8cfc-60415bcd8f81
